@@ -1,0 +1,6 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+
+ADD target/careconnect-document.jar careconnect-document.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/careconnect-document.jar"]
+

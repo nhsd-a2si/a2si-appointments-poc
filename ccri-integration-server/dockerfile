@@ -1,0 +1,10 @@
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+
+ADD target/careconnect-tie.jar careconnect-tie.jar
+
+# ENV JAVA_OPTS="-Xms512m -Xmx2048m"
+ENV JAVA_OPTS="-Xms512m -Xmx1024m"
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/careconnect-tie.jar"]
+

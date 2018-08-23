@@ -1,0 +1,134 @@
+version: '2'
+services:
+  ccri:
+    container_name: ccri
+    image: thorlogic/ccri-fhirserver:${CRRI_VERSION}
+    depends_on:
+      - ccrisql
+    links:
+      - ccrisql
+    environment:
+      - datasource.username=${MYSQL_DB_USER}
+      - datasource.password=${MYSQL_DB_PASSWORD}
+      - datasource.host=//ccrisql
+      - datasource.driver=com.mysql.jdbc.Driver
+      - datasource.path=3306/careconnect?autoReconnect=true
+      - datasource.vendor=mysql
+      - datasource.showSql=true
+      - datasource.showDdl=true
+      - datasource.cleardown.cron=0 19 21 * * *
+      - datasource.dialect=org.hibernate.dialect.MySQL57Dialect
+      - datasource.ui.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+      - datasource.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+    ports:
+      - 8080:8080
+    extra_hosts:
+      # Define an alias to loop back for REST Connections
+      - "${FHIR_SERVER_BASE_HOST}:127.0.0.1"
+    volumes:
+      - tomcat-log-volume:/usr/local/tomcat/logs
+    networks:
+      ccri_net:
+        ipv4_address: 172.168.240.10
+
+  ccrisql:
+    container_name: ccrisql
+    image: mysql:5.7.20
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypassword
+      - MYSQL_DATABASE=careconnect
+      - MYSQL_USER=${MYSQL_DB_USER}
+      - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+    ports:
+      - 20002:3306
+    networks:
+      - ccri_net
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_bin --innodb_lock_wait_timeout=300 --transaction-isolation=READ-UNCOMMITTED
+
+  ccrimongo:
+      container_name: ccrimongo
+      image: mongo:3.6.3
+      ports:
+        - 27107:27107
+      networks:
+        - ccri_net
+
+  ccridocument:
+      container_name: ccridocument
+      image: thorlogic/ccri-document:latest
+      depends_on:
+        - ccrimongo
+      links:
+        - ccrimongo
+      environment:
+        - fhir.resource.serverBase=http://167.99.202.134:8181/STU3
+        - fhir.resource.serverName=Care Connect RI FHIR Server
+        - fhir.resource.serverVersion=3.5.1-SNAPSHOT
+        - spring.data.mongodb.uri=mongodb://ccrimongo:27017/appointment
+        - spring.data.mongodb.database=appointment
+      ports:
+        - 8181:8181
+      extra_hosts:
+        # Define an alias to loop back for REST Connections
+        - "${FHIR_SERVER_BASE_HOST}:127.0.0.1"
+      volumes:
+        - tomcat-log-volume:/usr/local/tomcat/logs
+      networks:
+        ccri_net:
+          ipv4_address: 172.168.240.11
+
+  ccrigateway:
+    container_name: ccrigateway
+    image: thorlogic/ccri-fhirgateway:${CRRI_VERSION}
+    environment:
+      - datasource.ui.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+      - fhir.resource.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+      - fhir.restserver.serverBase=http4://ccri:8080/careconnect-ri/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+      - fhir.restserver.edmsBase=http4://ccridocument:8181/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+    depends_on:
+      - ccri
+    ports:
+      - 80:80
+    extra_hosts:
+      - "${FHIR_SERVER_BASE_HOST}:127.0.0.1"
+    volumes:
+      - gateway-log-volume:/usr/local/tomcat/logs
+    networks:
+      - ccri_net
+
+  ccrigatewayhttps:
+    container_name: ccrigatewayhttps
+    image: thorlogic/ccri-fhirgatewayhttps:${CRRI_VERSION}
+    environment:
+      - datasource.ui.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+      - fhir.resource.serverBase=http://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3
+      - fhir.restserver.serverBase=http4://${FHIR_SERVER_BASE_HOST}/careconnect-ri/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+      - fhir.restserver.edmsBase=http4://ccridocument:8181/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+    depends_on:
+      - ccri
+    ports:
+      - 88:80
+      - 8443:8443
+    extra_hosts:
+      # Define an alias to the CCRI Container to ensure that the correct Server Base is displayed by HAPI
+      - "${FHIR_SERVER_BASE_HOST}:172.168.240.10"
+    volumes:
+      - gatewayssl-log-volume:/usr/local/tomcat/logs
+      - ./.keystore:/usr/local/tomcat/.keystore:ro
+    networks:
+      - ccri_net
+
+volumes:
+  tomcat-log-volume:
+  gateway-log-volume:
+  gatewayssl-log-volume:
+
+
+networks:
+  ccri_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.168.240.0/24
+

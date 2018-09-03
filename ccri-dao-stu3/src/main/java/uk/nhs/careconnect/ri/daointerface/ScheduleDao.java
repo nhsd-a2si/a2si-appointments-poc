@@ -110,7 +110,7 @@ public class ScheduleDao implements ScheduleRepository {
                     String[] spiltStr = query.split("%7C");
                     log.debug(spiltStr[1]);
 
-                    List<ScheduleEntity> results = searchScheduleEntity(ctx,  new TokenParam().setValue(spiltStr[1]).setSystem("https://tools.ietf.org/html/rfc4122"),null, null, null,null);
+                    List<ScheduleEntity> results = searchScheduleEntity(ctx,  new TokenParam().setValue(spiltStr[1]).setSystem("https://tools.ietf.org/html/rfc4122"),null, null, null); //,null
                     for (ScheduleEntity con : results) {
                         serviceEntity = con;
                         break;
@@ -128,7 +128,7 @@ public class ScheduleDao implements ScheduleRepository {
             serviceEntity = new ScheduleEntity();
         }
 
-        if (service.hasProvidedBy()) {
+        /* if (service.hasProvidedBy()) {
 
             OrganisationEntity organisationEntity = organisationDao.readEntity(ctx, new IdType(service.getProvidedBy().getReference()));
             if (organisationEntity != null) {
@@ -249,14 +249,14 @@ public class ScheduleDao implements ScheduleRepository {
 
             em.persist(serviceTelecom);
         }
-        log.info("Schedule.Transform");
+        log.info("Schedule.Transform"); */
         return serviceEntityToFHIRScheduleTransformer.transform(serviceEntity);
 
     }
 
     @Override
-    public List<Schedule> searchSchedule(FhirContext ctx, TokenParam identifier, StringParam name, TokenOrListParam codes, TokenParam id, ReferenceParam organisation) {
-        List<ScheduleEntity> qryResults = searchScheduleEntity(ctx,identifier,name, codes,id,organisation);
+    public List<Schedule> searchSchedule(FhirContext ctx, TokenParam identifier, StringParam actor, TokenOrListParam codes, TokenParam id) { // , ReferenceParam organisation
+        List<ScheduleEntity> qryResults = searchScheduleEntity(ctx,identifier,actor, codes,id); //,organisation
         List<Schedule> results = new ArrayList<>();
 
         for (ScheduleEntity scheduleEntity : qryResults) {
@@ -268,7 +268,7 @@ public class ScheduleDao implements ScheduleRepository {
     }
 
     @Override
-    public List<ScheduleEntity> searchScheduleEntity(FhirContext ctx, TokenParam identifier, StringParam name, TokenOrListParam codes, TokenParam id, ReferenceParam organisation) {
+    public List<ScheduleEntity> searchScheduleEntity(FhirContext ctx, TokenParam identifier, StringParam actor, TokenOrListParam codes, TokenParam id) { // , ReferenceParam organisation
         List<ScheduleEntity> qryResults = null;
 
         CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -293,7 +293,7 @@ public class ScheduleDao implements ScheduleRepository {
             Predicate p = builder.equal(root.get("id"),id.getValue());
             predList.add(p);
         }
-        if (name !=null)
+        /* if (name !=null)
         {
 
             Predicate p =
@@ -303,7 +303,7 @@ public class ScheduleDao implements ScheduleRepository {
                     );
 
             predList.add(p);
-        }
+        } */
         
 
 

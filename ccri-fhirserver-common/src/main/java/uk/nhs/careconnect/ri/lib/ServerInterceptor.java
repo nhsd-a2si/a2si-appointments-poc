@@ -144,7 +144,7 @@ public class ServerInterceptor extends InterceptorAdapter {
         StrSubstitutor subs = new StrSubstitutor(lookup, "${", "}", '\\');
 
         // Actually log the line
-        String myMessageFormat = "httpVerb[${requestVerb}] Source[${remoteAddr}] Operation[${operationType} ${idOrResourceName}] UA[${requestHeader.user-agent}] Params[${requestParameters}] RequestId[${requestHeader.x-request-id}] ForwardedFor[${requestHeader.x-forwarded-for}] ForwardedHost[${requestHeader.x-forwarded-host}] CorrelationId[] ProcessingTime[]  ResponseCode[]";
+        String myMessageFormat = "httttttttttttttttttttttttttpVerb[${requestVerb}] Source[${remoteAddr}] Operation[${operationType} ${idOrResourceName}] UA[${requestHeader.user-agent}] Params[${requestParameters}] RequestId[${requestHeader.x-request-id}] ForwardedFor[${requestHeader.x-forwarded-for}] ForwardedHost[${requestHeader.x-forwarded-host}] CorrelationId[] ProcessingTime[]  ResponseCode[]";
 
         String line = subs.replace(myMessageFormat);
         log.info(line);
@@ -345,7 +345,7 @@ public class ServerInterceptor extends InterceptorAdapter {
             log.debug("Header  = " + header + "=" + theRequestDetails.getServletResponse().getHeader(header));
         }
 
-        String myMessageFormat = "httpVerb[${requestVerb}] Source[${remoteAddr}] Operation[${operationType} ${idOrResourceName}] UA[${requestHeader.user-agent}] Params[${requestParameters}] RequestId[${requestHeader.x-request-id}] ForwardedFor[${requestHeader.x-forwarded-for}] ForwardedHost[${requestHeader.x-forwarded-host}] CorrelationId[${requestHeader.x-request-id}] ProcessingTime[${processingTimeMillis}]";
+        String myMessageFormat = "hhhhhhhhhhhhttpVerb[${requestVerb}] Source[${remoteAddr}] Operation[${operationType} ${idOrResourceName}] UA[${requestHeader.user-agent}] Params[${requestParameters}] RequestId[${requestHeader.x-request-id}] ForwardedFor[${requestHeader.x-forwarded-for}] ForwardedHost[${requestHeader.x-forwarded-host}] CorrelationId[${requestHeader.x-request-id}] ProcessingTime[${processingTimeMillis}]";
 
         String line = subs.replace(myMessageFormat);
         log.info(line+" ResponseCode["+theRequestDetails.getServletResponse().getStatus()+"]");

@@ -59,7 +59,7 @@ public class ScheduleResourceProvider implements IResourceProvider {
         ProducerTemplate template = context.createProducerTemplate();
 
 
-        Schedule organization = null;
+        Schedule schedule = null;
         IBaseResource resource = null;
         try {
             InputStream inputStream = null;
@@ -83,11 +83,11 @@ public class ScheduleResourceProvider implements IResourceProvider {
             throw new InternalErrorException(ex.getMessage());
         }
         if (resource instanceof Schedule) {
-            organization = (Schedule) resource;
+            schedule = (Schedule) resource;
         } else {
             ProviderResponseLibrary.createException(ctx,resource);
         }
-        return organization;
+        return schedule;
     }
 
     @Create
@@ -138,7 +138,7 @@ public class ScheduleResourceProvider implements IResourceProvider {
     @Search
     public List<Schedule> searchSchedule(HttpServletRequest httpRequest,
                                                            @OptionalParam(name = Schedule.SP_IDENTIFIER) TokenParam identifier,
-                                                           @OptionalParam(name = Schedule.SP_NAME) StringParam name,
+                                                           @OptionalParam(name = Schedule.SP_ACTOR) StringParam actor,
                                                          //  @OptionalParam(name= Schedule.SP_TYPE) TokenOrListParam codes,
                                                            @OptionalParam(name = Schedule.SP_RES_ID) TokenParam id
                                                         //   @OptionalParam(name = Schedule.SP_ORGANIZATION) ReferenceParam organisation

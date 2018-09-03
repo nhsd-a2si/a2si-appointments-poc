@@ -43,7 +43,7 @@ public class ScheduleEntityToFHIRScheduleTransformer implements Transformer<Sche
         if (serviceEntity.getActive() != null) {
             service.setActive(serviceEntity.getActive());
         }
-        if (serviceEntity.getName() != null) {
+        /* if (serviceEntity.getName() != null) {
             service.setName(service.getName());
         }
         if (serviceEntity.getCategory() != null) {
@@ -80,7 +80,7 @@ public class ScheduleEntityToFHIRScheduleTransformer implements Transformer<Sche
                     .setCode(serviceType.getType_().getCode())
                     .setSystem(serviceType.getType_().getSystem())
                     .setDisplay(serviceType.getType_().getDisplay());
-        }
+        } */
 
 
         return service;

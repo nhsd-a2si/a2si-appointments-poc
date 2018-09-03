@@ -101,6 +101,9 @@ public class HAPIRestfulConfig extends RestfulServer {
 				,myAppCtx.getBean(BundleResourceProvider.class) // Supports uploading resources
 				,myAppCtx.getBean(EpisodeOfCareResourceProvider.class) // TO DO Remove me for live KGM
 
+				// UEC appointment prototype
+				,myAppCtx.getBean(ScheduleResourceProvider.class)
+
 				// Support for NHS Digital Natinal Projects  END
 
 				// NOT FOR LIVE

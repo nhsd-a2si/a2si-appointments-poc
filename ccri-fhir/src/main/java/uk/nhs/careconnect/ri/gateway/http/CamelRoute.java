@@ -255,6 +255,10 @@ public class CamelRoute extends RouteBuilder {
 				.routeId("Gateway Consent")
 				.to("direct:HAPIServer");
 
+		// UEC appointment prototype
+		from("direct:FHIRSchedule")
+				.routeId("Gateway Schedule")
+				.to("direct:HAPIServer");
 
 		from("direct:EDMSServer")
 				.routeId("EDMS FHIR Server")

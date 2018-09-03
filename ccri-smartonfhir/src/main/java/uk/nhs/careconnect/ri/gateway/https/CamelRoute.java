@@ -315,6 +315,11 @@ public class CamelRoute extends RouteBuilder {
 				.routeId("Gateway Consent")
 				.to("direct:HAPIServer");
 
+		// UEC appointment prototype
+		from("direct:FHIRSchedule")
+				.routeId("Gateway Schedule")
+				.to("direct:HAPIServer");
+
 		from("direct:EDMSServer")
 				.routeId("Int EDMS FHIR Server")
 				.to("log:uk.nhs.careconnect.FHIRGateway.start?level=INFO&showHeaders=true&showExchangeId=true")

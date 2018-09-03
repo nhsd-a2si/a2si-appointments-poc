@@ -96,6 +96,9 @@ public class HAPIRestfulConfig extends RestfulServer {
 				,myAppCtx.getBean(ClinicalImpressionResourceProvider.class)
 				,myAppCtx.getBean(ConsentResourceProvider.class)
 				// ,myAppCtx.getBean(EpisodeOfCareResourceProvider.class) // TO DO Remove me for live KGM
+
+				// UEC appointment prototype
+				,myAppCtx.getBean(ScheduleResourceProvider.class)
 		));
 
         // Replace built in conformance provider (CapabilityStatement)

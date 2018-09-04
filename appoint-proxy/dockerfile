@@ -1,0 +1,36 @@
+#######################################################################################
+# BUILD THE APPOINTMENT PATHWAYSDOS PROXY SERVER
+#######################################################################################
+
+# Ubuntu base image
+FROM ubuntu
+
+# Any questions, just ask
+MAINTAINER Aire Logic Ltd (developer Dan Dammann <marcdanieldammann@gmail.com>)
+
+# Update repo source list
+RUN apt-get update
+
+# Install apache
+RUN apt-get install -y apache2
+
+# Configure Apache (TODO: Why does the LIVE server not need a ServerName, but I do?)
+# RUN sed -i "s/#ServerName www.example.com:80/ServerName $WEB01_DOMAINNAME:$WEB01_CONTAINER_PORT/g" /etc/httpd/conf/httpd.conf
+
+# Change into dir with hard-coded SOAP
+# RUN echo "cd /var/www/html/app/api/webservices/" >> ~/.bashrc
+
+# Copy custom files
+COPY var/www/html/app/api/webservices/* /var/www/html/app/api/webservices/
+COPY entryPoint.sh /entryPoint.sh
+
+# Make executable
+RUN chmod +x /entryPoint.sh
+
+# Expose the internal http server port to the Docker host, so we can see the web site in the browser
+EXPOSE 80
+
+# Do more work, once the container is up & running
+ENTRYPOINT ["/entryPoint.sh"]
+# CMD ["bash", "tail -f /dev/null"]
+# CMD ["bash", "/entryPoint.sh"]

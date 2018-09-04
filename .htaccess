@@ -1,0 +1,4 @@
+AddType text/xml .xml
+
+DirectoryIndex index.xml
+

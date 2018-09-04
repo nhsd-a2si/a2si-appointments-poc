@@ -1,0 +1,36 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:end="http://endpoint.proxy.appoint.nhsd.airelogic.com/">
+    <soapenv:Header/>
+    <soap:Body>
+        <web:CheckCapacitySummaryResponse xmlns:ns1='https://nww.pathwaysdos.nhs.uk/app/api/webservices'>
+            <web:TransactionId>2389375874</web:TransactionId>
+            <web:CheckCapacitySummaryResult>
+                <web:capacity>???</web:capacity>
+                <web:name>Dental - Burmantofts Dental Practice</web:name>
+                <web:contactDetails>0113 244 9900</web:contactDetails>
+                <web:address>7-8 Skinner Lane, 20:20 House, Leeds LS7 1BB</web:address>
+                <web:postcode>BD4 7QP</web:postcode>
+                <web:northings>565932</web:northings>
+                <web:eastings>483957</web:eastings>
+                <web:odsCode>5373886552</web:odsCode>
+                <web:distance>0.1</web:distance>
+                <web:notes></web:notes>
+                <web:openAllHours>false</web:openAllHours>
+                <web:asId>6257652</web:asId>
+            </web:CheckCapacitySummaryResult>
+            <web:CheckCapacitySummaryResult>
+                <web:capacity>???</web:capacity>
+                <web:name>Dental - Olney Dental Care</web:name>
+                <web:contactDetails>01274 720980</web:contactDetails>
+                <web:address>5 Lister Avenue, Bradford, BD4 7QP</web:address>
+                <web:postcode>BD4 7QP</web:postcode>
+                <web:northings>431436</web:northings>
+                <web:eastings>417867</web:eastings>
+                <web:odsCode>1323782502</web:odsCode>
+                <web:distance>0.3</web:distance>
+                <web:notes>Disposition Instructions: HOW IS A REFERRAL MADE TO THIS SERVICE?</web:notes>
+                <web:openAllHours>false</web:openAllHours>
+                <web:asId>968372</web:asId>
+            </web:CheckCapacitySummaryResult>
+        </web:CheckCapacitySummaryResponse>
+    </soap:Body>
+</soap:Envelope>

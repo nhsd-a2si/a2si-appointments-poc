@@ -16,74 +16,74 @@ public class ScheduleEntityToFHIRScheduleTransformer implements Transformer<Sche
     
 
     @Override
-    public Schedule transform(final ScheduleEntity serviceEntity) {
-        final Schedule service = new Schedule();
+    public Schedule transform(final ScheduleEntity scheduleEntity) {
+        final Schedule schedule = new Schedule();
 
         Meta meta = new Meta(); //.addProfile(CareConnectProfile.Location_1);
 
-        if (serviceEntity.getUpdated() != null) {
-            meta.setLastUpdated(serviceEntity.getUpdated());
+        if (scheduleEntity.getUpdated() != null) {
+            meta.setLastUpdated(scheduleEntity.getUpdated());
         }
         else {
-            if (serviceEntity.getCreated() != null) {
-                meta.setLastUpdated(serviceEntity.getCreated());
+            if (scheduleEntity.getCreated() != null) {
+                meta.setLastUpdated(scheduleEntity.getCreated());
             }
         }
-        service.setMeta(meta);
+        schedule.setMeta(meta);
 
-        service.setId(serviceEntity.getId().toString());
+        schedule.setId(scheduleEntity.getId().toString());
 
-        for(ScheduleIdentifier identifier : serviceEntity.getIdentifiers())
+        for(ScheduleIdentifier identifier : scheduleEntity.getIdentifiers())
         {
-            service.addIdentifier()
+            schedule.addIdentifier()
                     .setSystem(identifier.getSystem().getUri())
                     .setValue(identifier.getValue());
         }
 
-        if (serviceEntity.getActive() != null) {
-            service.setActive(serviceEntity.getActive());
+        if (scheduleEntity.getActive() != null) {
+            schedule.setActive(scheduleEntity.getActive());
         }
-        /* if (serviceEntity.getName() != null) {
-            service.setName(service.getName());
+        /* if (scheduleEntity.getName() != null) {
+            schedule.setName(schedule.getName());
         }
-        if (serviceEntity.getCategory() != null) {
-            service.getCategory()
+        if (scheduleEntity.getCategory() != null) {
+            schedule.getCategory()
                     .addCoding()
-                    .setDisplay(serviceEntity.getCategory().getDisplay())
-                    .setSystem(serviceEntity.getCategory().getSystem())
-                    .setCode(serviceEntity.getCategory().getCode());
+                    .setDisplay(scheduleEntity.getCategory().getDisplay())
+                    .setSystem(scheduleEntity.getCategory().getSystem())
+                    .setCode(scheduleEntity.getCategory().getCode());
         }
 
-        if (serviceEntity.getProvidedBy() != null) {
-            service.setProvidedBy(new Reference("Organization/"+serviceEntity.getProvidedBy().getId()));
+        if (scheduleEntity.getProvidedBy() != null) {
+            schedule.setProvidedBy(new Reference("Organization/"+scheduleEntity.getProvidedBy().getId()));
         }
-        for (ScheduleSpecialty serviceSpecialty : serviceEntity.getSpecialties()) {
-            service.addSpecialty()
+        for (ScheduleSpecialty scheduleSpecialty : scheduleEntity.getSpecialties()) {
+            schedule.addSpecialty()
                     .addCoding()
-                        .setCode(serviceSpecialty.getSpecialty().getCode())
-                        .setSystem(serviceSpecialty.getSpecialty().getSystem())
-                        .setDisplay(serviceSpecialty.getSpecialty().getDisplay());
+                        .setCode(scheduleSpecialty.getSpecialty().getCode())
+                        .setSystem(scheduleSpecialty.getSpecialty().getSystem())
+                        .setDisplay(scheduleSpecialty.getSpecialty().getDisplay());
         }
-        for (ScheduleLocation serviceLocation : serviceEntity.getLocations()) {
-            service.addLocation(new Reference("Location/"+serviceLocation.getLocation().getId()));
+        for (ScheduleLocation scheduleLocation : scheduleEntity.getLocations()) {
+            schedule.addLocation(new Reference("Location/"+scheduleLocation.getLocation().getId()));
         }
-        for (ScheduleTelecom serviceTelecom : serviceEntity.getTelecoms()) {
-            service.addTelecom()
-                    .setSystem(serviceTelecom.getSystem())
-                    .setValue(serviceTelecom.getValue())
-                    .setUse(serviceTelecom.getTelecomUse());
+        for (ScheduleTelecom scheduleTelecom : scheduleEntity.getTelecoms()) {
+            schedule.addTelecom()
+                    .setSystem(scheduleTelecom.getSystem())
+                    .setValue(scheduleTelecom.getValue())
+                    .setUse(scheduleTelecom.getTelecomUse());
 
         }
-        for (ScheduleType serviceType : serviceEntity.getTypes()) {
-            service.addType()
+        for (ScheduleType scheduleType : scheduleEntity.getTypes()) {
+            schedule.addType()
                     .addCoding()
-                    .setCode(serviceType.getType_().getCode())
-                    .setSystem(serviceType.getType_().getSystem())
-                    .setDisplay(serviceType.getType_().getDisplay());
+                    .setCode(scheduleType.getType_().getCode())
+                    .setSystem(scheduleType.getType_().getSystem())
+                    .setDisplay(scheduleType.getType_().getDisplay());
         } */
 
 
-        return service;
+        return schedule;
 
     }
 }

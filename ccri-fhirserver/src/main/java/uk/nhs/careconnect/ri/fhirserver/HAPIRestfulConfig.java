@@ -69,15 +69,15 @@ public class HAPIRestfulConfig extends RestfulServer {
 		 * contains bean definitions for a resource provider for each resource type
 		 */
         setResourceProviders(Arrays.asList(
-                myAppCtx.getBean(PatientProvider.class),
-                myAppCtx.getBean(OrganizationProvider.class),
-                myAppCtx.getBean(PractitionerProvider.class),
-                myAppCtx.getBean(LocationProvider.class),
-                myAppCtx.getBean(ValueSetProvider.class),
-                myAppCtx.getBean(StructureDefinitionProvider.class),
-                myAppCtx.getBean(CodeSystemProvider.class),
-                myAppCtx.getBean(ObservationProvider.class),
-                myAppCtx.getBean(PractitionerRoleProvider.class)
+                myAppCtx.getBean(PatientProvider.class)
+                ,myAppCtx.getBean(OrganizationProvider.class)
+                ,myAppCtx.getBean(PractitionerProvider.class)
+                ,myAppCtx.getBean(LocationProvider.class)
+                ,myAppCtx.getBean(ValueSetProvider.class)
+                ,myAppCtx.getBean(StructureDefinitionProvider.class)
+                ,myAppCtx.getBean(CodeSystemProvider.class)
+                ,myAppCtx.getBean(ObservationProvider.class)
+                ,myAppCtx.getBean(PractitionerRoleProvider.class)
                 ,myAppCtx.getBean(EncounterProvider.class)
                 ,myAppCtx.getBean(EpisodeOfCareProvider.class)
                 ,myAppCtx.getBean(AllergyIntoleranceProvider.class)
@@ -94,20 +94,20 @@ public class HAPIRestfulConfig extends RestfulServer {
                 ,myAppCtx.getBean(MedicationProvider.class)
                 ,myAppCtx.getBean(ReferralRequestProvider.class)
                 ,myAppCtx.getBean(HealthcareServiceProvider.class)
-                , myAppCtx.getBean(EndpointProvider.class)
-                , myAppCtx.getBean(QuestionnaireProvider.class)
-                , myAppCtx.getBean(QuestionnaireResponseProvider.class)
-                , myAppCtx.getBean(ListProvider.class)
-                , myAppCtx.getBean(RelatedPersonProvider.class)
-                , myAppCtx.getBean(CareTeamProvider.class)
-                , myAppCtx.getBean(GoalProvider.class)
-                , myAppCtx.getBean(RiskAssessmentProvider.class)
-                , myAppCtx.getBean(MedicationDispenseProvider.class)
-                , myAppCtx.getBean(ClinicalImpressionProvider.class)
-                , myAppCtx.getBean(ConsentProvider.class)
+                ,myAppCtx.getBean(EndpointProvider.class)
+                ,myAppCtx.getBean(QuestionnaireProvider.class)
+                ,myAppCtx.getBean(QuestionnaireResponseProvider.class)
+                ,myAppCtx.getBean(ListProvider.class)
+                ,myAppCtx.getBean(RelatedPersonProvider.class)
+                ,myAppCtx.getBean(CareTeamProvider.class)
+                ,myAppCtx.getBean(GoalProvider.class)
+                ,myAppCtx.getBean(RiskAssessmentProvider.class)
+                ,myAppCtx.getBean(MedicationDispenseProvider.class)
+                ,myAppCtx.getBean(ClinicalImpressionProvider.class)
+                ,myAppCtx.getBean(ConsentProvider.class)
 
                 // UEC appointment prototype
-                ,myAppCtx.getBean(ScheduleResourceProvider.class)
+                ,myAppCtx.getBean(ScheduleProvider.class)
         ));
 
         // Replace built in conformance provider (CapabilityStatement)

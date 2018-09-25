@@ -1,0 +1,101 @@
+version: '2'
+services:
+
+  ccrisql:
+    container_name: ccrisql
+    image: thorlogic/ccri-sql${IMAGE_TAG}
+    environment:
+    - POSTGRES_DB=careconnect
+    - POSTGRES_USER=${MYSQL_DB_USER}
+    - POSTGRES_PASSWORD=${MYSQL_DB_PASSWORD}
+    ports:
+    - 5432:5432
+    networks:
+    - ccri_net
+
+  ccriserver:
+    container_name: ccriserver
+    image: thorlogic/ccri-fhirserver${IMAGE_TAG}
+    depends_on:
+    - ccrisql
+    links:
+    - ccrisql
+    environment:
+    - datasource.username=${MYSQL_DB_USER}
+    - datasource.password=${MYSQL_DB_PASSWORD}
+    - datasource.host=//ccrisql
+    - datasource.driver=org.postgresql.Driver
+    - datasource.path=5432/careconnect
+    - datasource.vendor=postgresql
+    - datasource.showSql=true
+    - datasource.showDdl=true
+    - datasource.cleardown.cron=0 19 21 * * *
+    - datasource.dialect=org.hibernate.dialect.PostgreSQL9Dialect
+    - datasource.ui.serverBase=http://${FHIR_SERVER_BASE_HOST}/ccri/fhir/STU3
+    - datasource.serverBase=http://${FHIR_SERVER_BASE_HOST}/ccri/fhir/STU3
+    ports:
+    - 8109:8186
+    extra_hosts:
+    # Define an alias to loop back for REST Connections
+    - "${FHIR_SERVER_BASE_HOST}:127.0.0.1"
+    volumes:
+    - tomcat-log-volume:/usr/local/tomcat/logs
+    networks:
+      ccri_net:
+        ipv4_address: 172.168.240.10
+
+
+
+  ccridataload:
+    container_name: ccridataload
+    image: thorlogic/ccri-dataload${IMAGE_TAG}
+    depends_on:
+    - ccriserver
+    environment:
+    - FHIR_SERVER=http://ccriserver:8186/ccri-fhirserver/STU3
+    - POSTGRES_JDBC=postgresql://ccrisql:5432/careconnect
+    - POSTGRES_USER=${MYSQL_DB_USER}
+    - POSTGRES_USERNAME=${MYSQL_DB_USER}
+    - POSTGRES_PASSWORD=${MYSQL_DB_PASSWORD}
+    networks:
+      ccri_net:
+        ipv4_address: 172.168.240.13
+
+
+  a2sifhir:
+    container_name: a2sifhir
+    image: snoopy2k18/a2si-facade
+    depends_on:
+    - ccriserver
+    environment:
+    - fhir.restserver.serverBase=http4://ccriserver:8186/ccri-fhirserver/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+    ports:
+    - 8189:8188
+    extra_hosts:
+    - "${FHIR_SERVER_BASE_HOST}:172.168.240.10"
+    volumes:
+    - a2si-log-volume:/usr/local/tomcat/logs
+    networks:
+      ccri_net:
+        ipv4_address: 172.168.240.19
+
+
+
+volumes:
+  tomcat-log-volume:
+  gateway-log-volume:
+  gatewayssl-log-volume:
+  tie-log-volume:
+  mongo-log-volume:
+  sqlvol:
+  a2si-log-volume:
+
+networks:
+  ccri_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.168.240.0/24
+
+

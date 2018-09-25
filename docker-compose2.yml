@@ -1,0 +1,27 @@
+version: '2'
+services:
+
+  a2sifhir:
+    container_name: a2sifhir
+    image: snoopy2k18/a2si-facade
+    environment:
+      - fhir.restserver.serverBase=http4://data.developer.nhs.uk/ccri-fhir/STU3?throwExceptionOnFailure=false&bridgeEndpoint=true
+    ports:
+      - 8189:8188
+    extra_hosts:
+      - "${FHIR_SERVER_BASE_HOST}:172.168.240.10"
+    volumes:
+      - a2si-log-volume:/usr/local/tomcat/logs
+
+
+
+
+volumes:
+
+  a2si-log-volume:
+  tomcat-log-volume:
+  sqlvol:
+
+
+
+
